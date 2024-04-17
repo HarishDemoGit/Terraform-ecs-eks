@@ -1,0 +1,11 @@
+vpc_name = "Demo"
+vpc_cidr_block = "10.1.0.0/16"
+subnet_cidr_block_1 = "10.1.1.0/24"
+subnet_cidr_block_2 = "10.1.2.0/24"
+subnet_cidr_block_3 = "10.1.3.0/24"
+subnet_name1 = "sub1"
+subnet_name2 = "sub2"
+subnet_name3 = "sub3"
+security_group_name = "sg"
+
+# availability_zone = "us-east-1a"

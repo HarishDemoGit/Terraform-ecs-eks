@@ -1,0 +1,21 @@
+# Ignore Terraform provider plugins binaries
+.terraform/
+
+# Ignore all binary files in the repository
+*.dll
+*.exe
+*.gif
+*.gz
+*.iso
+*.jar
+*.jpeg
+*.jpg
+*.mp3
+*.mp4
+*.pdf
+*.png
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.zip
