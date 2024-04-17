@@ -9,6 +9,7 @@ module "istio" {
 }
 
 resource "null_resource" "update_kubeconfig" {
+    depends_on = [ aws_eks_cluster.eks_main_cluster ]
   # This null resource will run the aws eks update-kubeconfig command
   # before applying the Istio module.
   triggers = {
