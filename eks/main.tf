@@ -1,24 +1,24 @@
 
 # Module for istio in kubernetes using helm
-# module "istio" {
-#   source  = "truemark/istio/kubernetes"
-#   version = "0.0.5"
-#   # insert the 1 required variable here
-#   vpc_id = "Module.Network.vpc_id"
-#   # depends_on = [ "aws eks update-kubeconfig --region us-east-1 --name demo_eks_cluster" ]
-# }
+module "istio" {
+  source  = "truemark/istio/kubernetes"
+  version = "0.0.5"
+  # insert the 1 required variable here
+  vpc_id = "Module.Network.vpc_id"
+  # depends_on = [ "aws eks update-kubeconfig --region us-east-1 --name demo_eks_cluster" ]
+}
 
-# resource "null_resource" "update_kubeconfig" {
-#   # This null resource will run the aws eks update-kubeconfig command
-#   # before applying the Istio module.
-#   triggers = {
-#     always_run = "${timestamp()}"
-#   }
+resource "null_resource" "update_kubeconfig" {
+  # This null resource will run the aws eks update-kubeconfig command
+  # before applying the Istio module.
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
-#   provisioner "local-exec" {
-#     command = "aws eks update-kubeconfig --region us-east-1 --name demo_eks_cluster"
-#   }
-# }
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --region us-east-1 --name demo_eks_cluster"
+  }
+}
 
 # The above module is working perfectly
 
