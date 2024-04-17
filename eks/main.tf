@@ -22,15 +22,15 @@ resource "null_resource" "update_kubeconfig" {
 
 # The above module is working perfectly
 
-module "istio" {
-  source  = "truemark/istio/kubernetes"
-  version = "0.0.5"
-  # Insert any required variables here
-  vpc_id = "Module.Network.vpc_id"
+# module "istio" {
+#   source  = "truemark/istio/kubernetes"
+#   version = "0.0.5"
+#   # Insert any required variables here
+#   vpc_id = "Module.Network.vpc_id"
 
-  # Define an implicit dependency on the null_resource "update_kubeconfig"
-  # depends_on = [null_resource.update_kubeconfig]
-}
+#   # Define an implicit dependency on the null_resource "update_kubeconfig"
+#   # depends_on = [null_resource.update_kubeconfig]
+# }
 
 
 
