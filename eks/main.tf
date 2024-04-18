@@ -55,23 +55,21 @@ resource "aws_eks_node_group" "eks_nodeGroup" {
 #   role_arn        = aws_iam_role.eks_pod.arn
 # }
 
+# resource "null_resource" "update_kubeconfig" {
+#     depends_on = [ aws_eks_cluster.eks_main_cluster ]
+#   # This null resource will run the aws eks update-kubeconfig command
+#   # before applying the Istio module.
+#   triggers = {
+#     always_run = "${timestamp()}"
+#   }
+
+#   provisioner "local-exec" {
+#     command = "aws eks update-kubeconfig --region us-east-1 --name demo_eks_cluster"
+#   }
+# }
+
 module "istio" {
   source  = "truemark/istio/kubernetes"
   version = "0.0.5"
-  # insert the 1 required variable here
   vpc_id = "Module.Network.vpc_id"
-  # depends_on = [ "aws eks update-kubeconfig --region us-east-1 --name demo_eks_cluster" ]
-}
-
-resource "null_resource" "update_kubeconfig" {
-    depends_on = [ aws_eks_cluster.eks_main_cluster ]
-  # This null resource will run the aws eks update-kubeconfig command
-  # before applying the Istio module.
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command = "aws eks update-kubeconfig --region us-east-1 --name demo_eks_cluster"
-  }
 }
