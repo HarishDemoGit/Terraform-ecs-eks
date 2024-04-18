@@ -21,11 +21,11 @@ module "eks" {
 
 
 
-module "ecs" {
-  source = "./ecs"
-  ecs_cluster_name = "demo_ecs_cluster"
-  ecs_cluster_capacity_provider = "demo_cp"
-  subnet_ids = [module.Network.subnet_name2, module.Network.subnet_name3]
-}
-# 
+# module "ecs" {
+#   source = "./ecs"
+#   ecs_cluster_name = "demo_ecs_cluster"
+#   ecs_cluster_capacity_provider = "demo_cp"
+#   subnet_ids = [module.Network.subnet_name2, module.Network.subnet_name3]
+# }
+
 
