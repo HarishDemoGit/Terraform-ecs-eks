@@ -1,10 +1,6 @@
 
 # Module for istio in kubernetes using helm
 
-
-
-# The above module is working perfectly
-
 # module "istio" {
 #   source  = "truemark/istio/kubernetes"
 #   version = "0.0.5"
