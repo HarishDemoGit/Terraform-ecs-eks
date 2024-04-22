@@ -19,8 +19,6 @@ module "eks" {
   subnet_ids = [module.Network.subnet_name1, module.Network.subnet_name2]
 }
 
-
-
 # module "ecs" {
 #   source = "./ecs"
 #   ecs_cluster_name = "demo_ecs_cluster"

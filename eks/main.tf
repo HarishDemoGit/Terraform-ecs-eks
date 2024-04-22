@@ -40,7 +40,7 @@ resource "aws_eks_node_group" "eks_nodeGroup" {
 
   scaling_config {
     desired_size = 1
-    max_size     = 1
+    max_size     = 2
     min_size     = 1
   }
 }
@@ -66,8 +66,8 @@ resource "aws_eks_node_group" "eks_nodeGroup" {
 #   }
 # }
 
-module "istio" {
-  source  = "truemark/istio/kubernetes"
-  version = "0.0.5"
-  vpc_id = "Module.Network.vpc_id"
-}
+# module "istio" {
+#   source  = "truemark/istio/kubernetes"
+#   version = "0.0.5"
+#   vpc_id = "Module.Network.vpc_id"
+# }

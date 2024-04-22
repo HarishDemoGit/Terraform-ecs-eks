@@ -1,5 +1,6 @@
 # Ignore Terraform provider plugins binaries
 .terraform/
+provider.tf
 
 # Ignore all binary files in the repository
 *.dll
