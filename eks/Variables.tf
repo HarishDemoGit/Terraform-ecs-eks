@@ -13,3 +13,15 @@ variable "eks_nodeGroup_name" {
 variable "subnet_ids" {
   description = "public subnet ids"
 }
+
+# variable "cluster_name" {
+#     description = "Name of the cluster"
+# }
+
+# variable "cluster_endpoint" {
+#     description = "cluster endpoint"  
+# }
+
+# variable "cluster_ca_cert" {
+#     description = "Eks cluster certificate"  
+# }
