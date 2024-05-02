@@ -19,12 +19,14 @@ module "eks" {
   subnet_ids = [module.Network.subnet_name1, module.Network.subnet_name2]
 }
 
-# module "istio" {
-#   source = "./istioFiles"
-#   cluster_name = module.istioFiles.cluster_name
-#   cluster_endpoint = module.istioFiles.cluster_endpoint
-#   cluster_ca_cert = module.istioFiles.cluster_ca_cert
-# }
+module "istio" {
+  depends_on = [ module.eks]
+  source = "./istioFiles"
+  cluster_name = module.eks.cluster_name
+  # cluster_endpoint = module.eks.cluster_endpoint
+  # cluster_ca_cert = module.eks.cluster_ca_cert
+}
+
 
 module "ecs" {
   source = "./ecs"
@@ -33,4 +35,7 @@ module "ecs" {
   subnet_ids = [module.Network.subnet_name2, module.Network.subnet_name3]
 }
 
-
+# module "test" {
+#   depends_on = [ module.eks ]
+#   source = "./namespace"
+# }

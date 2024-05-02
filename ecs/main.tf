@@ -17,6 +17,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "cluster_cp" {
+  depends_on = [ aws_ecs_cluster.ecs_cluster ]
     cluster_name = var.ecs_cluster_name
 
     capacity_providers = ["FARGATE"]
@@ -29,6 +30,7 @@ resource "aws_ecs_cluster_capacity_providers" "cluster_cp" {
 }
 
 resource "aws_ecs_task_definition" "task_def" {
+  depends_on = [ aws_ecs_cluster_capacity_providers.cluster_cp ]
   family = "task_def"
   requires_compatibilities = ["FARGATE"]
   network_mode = "awsvpc"
@@ -39,7 +41,7 @@ resource "aws_ecs_task_definition" "task_def" {
   container_definitions = jsonencode([
     {
       name      = "ecs"
-      image     = "339712741355.dkr.ecr.us-east-1.amazonaws.com/ecs:latest"
+      image     = "590183871011.dkr.ecr.us-east-1.amazonaws.com/ecs:latest"
 
       essential = true
       portMappings = [
@@ -52,81 +54,82 @@ resource "aws_ecs_task_definition" "task_def" {
   ])
 }
 
-# resource "aws_ecs_service" "ecs_service" {
-#   name            = "ecs_service"
-#   cluster         = var.ecs_cluster_name
-#   task_definition = aws_ecs_task_definition.task_def.arn
-#   desired_count   = 1
+resource "aws_ecs_service" "ecs_service" {
+  depends_on = [ aws_ecs_task_definition.task_def ]
+  name            = "ecs_service"
+  cluster         = var.ecs_cluster_name
+  task_definition = aws_ecs_task_definition.task_def.arn
+  desired_count   = 1
   
-#   network_configuration {
-#     security_groups    = [module.Network.security_group_id]
-#     subnets            = [module.Network.subnet_name2, module.Network.subnet_name3]
-#     assign_public_ip = true  
-#   }
+  network_configuration {
+    security_groups    = [module.Network.security_group_id]
+    subnets            = [module.Network.subnet_name2, module.Network.subnet_name3]
+    assign_public_ip = true  
+  }
 
-#   load_balancer {
-#     target_group_arn = aws_lb_target_group.ecs_tg.arn
-#     container_name = "ecs"
-#     container_port = 8084
-#   }
-# }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ecs_tg.arn
+    container_name = "ecs"
+    container_port = 8084
+  }
+}
 
-# resource "aws_launch_template" "ecs_lt" {
-#   name = "ecs_lt"
-#   image_id = "ami-0c101f26f147fa7fd"
-#   instance_type = "t2.micro"
-#   key_name = "ekspem"    
-# }
+resource "aws_launch_template" "ecs_lt" {
+  name = "ecs_lt"
+  image_id = "ami-07caf09b362be10b8"
+  instance_type = "t2.micro"
+  key_name = "root"    
+}
 
-# resource "aws_autoscaling_group" "ecs_asg" {
-#  vpc_zone_identifier = [module.Network.subnet_name2, module.Network.subnet_name3]
-#  desired_capacity    = 1
-#  max_size            = 2
-#  min_size            = 1
+resource "aws_autoscaling_group" "ecs_asg" {
+ vpc_zone_identifier = [module.Network.subnet_name2, module.Network.subnet_name3]
+ desired_capacity    = 1
+ max_size            = 2
+ min_size            = 1
 
-#  launch_template {
-#    id      = aws_launch_template.ecs_lt.id
-#    version = "$Latest"
-#  }
+ launch_template {
+   id      = aws_launch_template.ecs_lt.id
+   version = "$Latest"
+ }
 
-#  tag {
-#    key                 = "AmazonECSManaged"
-#    value               = true
-#    propagate_at_launch = true
-#  }
-# }
+ tag {
+   key                 = "AmazonECSManaged"
+   value               = true
+   propagate_at_launch = true
+ }
+}
 
-# resource "aws_lb" "ecs_alb" {
-#  name               = "ecs-alb"
-#  internal           = false
-#  load_balancer_type = "application"
-#  security_groups    = [module.Network.security_group_id]
-#  subnets            = [module.Network.subnet_name2, module.Network.subnet_name3]
-#  tags = {
-#    Name = "ecs-alb"
-#  }
-# }
+resource "aws_lb" "ecs_alb" {
+ name               = "ecs-alb"
+ internal           = false
+ load_balancer_type = "application"
+ security_groups    = [module.Network.security_group_id]
+ subnets            = [module.Network.subnet_name2, module.Network.subnet_name3]
+ tags = {
+   Name = "ecs-alb"
+ }
+}
 
-# resource "aws_lb_listener" "ecs_alb_listener" {
-#  load_balancer_arn = aws_lb.ecs_alb.arn
-#  port              = 80
-#  protocol          = "HTTP"
+resource "aws_lb_listener" "ecs_alb_listener" {
+ load_balancer_arn = aws_lb.ecs_alb.arn
+ port              = 80
+ protocol          = "HTTP"
 
-#  default_action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.ecs_tg.arn
-#  }
-# }
+ default_action {
+   type             = "forward"
+   target_group_arn = aws_lb_target_group.ecs_tg.arn
+ }
+}
 
-# resource "aws_lb_target_group" "ecs_tg" {
-#  name        = "ecs-target-group"
-#  port        = 8084
-#  protocol    = "HTTP"
-#  target_type = "ip"
-#  vpc_id = module.Network.vpc_id
+resource "aws_lb_target_group" "ecs_tg" {
+ name        = "ecs-target-group"
+ port        = 8084
+ protocol    = "HTTP"
+ target_type = "ip"
+ vpc_id = module.Network.vpc_id
 
-#  health_check {
-#    path = "/hello"
-#  }
-# }
+ health_check {
+   path = "/hello"
+ }
+}
 

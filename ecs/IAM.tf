@@ -47,10 +47,3 @@ resource "aws_iam_policy_attachment" "ecr_policy_attachment" {
   roles      = [aws_iam_role.ecs_task_execution_role.name]
   policy_arn = aws_iam_policy.ecr_policy.arn
 }
-
-
-
-# 
-# 
-# 
-

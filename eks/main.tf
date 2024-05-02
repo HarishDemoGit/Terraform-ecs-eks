@@ -46,64 +46,6 @@ resource "aws_eks_node_group" "eks_nodeGroup" {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# resource "helm_release" "istio_base" {
-#   depends_on = [ aws_eks_node_group.eks_nodeGroup ]
-#   name  = "istio-base"
-#   chart = "${path.module}/istio-1.21.2/manifests/charts/base"
-#   namespace  = "istio-system"
-#   create_namespace = true
-# }
-
-# resource "helm_release" "istiod" {
-#   name  = "istiod"
-#   chart = "${path.module}/istio-1.21.2/manifests/charts/istio-control/istio-discovery"
-#   namespace  = "istio-system"
-#   create_namespace = true
-
-#   depends_on = [ helm_release.istio_base]
-# }
-
-# resource "helm_release" "istio_ingress" {
-#   name  = "istio-ingress"
-#   chart = "${path.module}/istio-1.21.2/manifests/charts/gateways/istio-ingress"
-#   namespace  = "istio-system"
-#   create_namespace = true
-#   values = [
-#     "${file("${path.module}/values.yaml")}"
-#   ]
-#   depends_on = [ helm_release.istiod ]  
-# }
-
-
-
 # #Pod
 # resource "aws_eks_pod_identity_association" "eks_pod" {
 #   cluster_name    = var.eks_cluster_name
